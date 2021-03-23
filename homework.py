@@ -37,7 +37,7 @@ class Calculator:
         summ_day_amount = 0
         for n in self.records:
             amount_date = n.split(', ')
-            asd = int(amount_date[0])
+            asd = int(amount_date[0])                 # Я правильно рассуждаю?
             if str(day) == amount_date[-1] :
                 summ_day_amount += asd
 
