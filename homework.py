@@ -8,23 +8,21 @@ day = moment.date()
 #print(day)
 # напечатает дату: 2019-12-16        
 now = dt.datetime.now()
+nowdate = now.date()
 #print(now)
 # напечатает время на текущий момент в формате: 2019-01-31 13:33:27.506227        
 #print(now.date()) 
 # напечатает текущую дату: 2019-01-31
 
 class Record:
-    def __init__(self, amount, comment, date=None):
+    def __init__(self, amount, comment, date='nowdate'):
         self.amount = amount
         self.comment = comment
-        date_format = '%d.%m.%Y'
         formatdate = dt.datetime.strptime(date, date_format)
         self.date = formatdate.date()
-
+        
 class Calculator: 
-    records = []  
-    #USD_RATE  
-    #EURO_RATE                 
+    records = []                 
     def __init__(self, limit):
         self.limit = limit
     
@@ -33,35 +31,48 @@ class Calculator:
 
     def get_today_stats(self):
         summ_day_amount = 0
-        for object_Record in self.records:         
-            if now.date() == object_Record.date:
-                summ_day_amount += object_Record.amount
-        return(summ_day_amount)
+        for object_record in self.records:         
+            if now.date() == object_record.date:
+                summ_day_amount += object_record.amount
+        return summ_day_amount
                                       
     def get_week_stats(self):
         summ_weekday_amount = 0 
         one_week_ago = now.date() - dt.timedelta(days=7)
-        for object_Record in self.records:  
-            if one_week_ago <= object_Record.date: 
-                summ_weekday_amount += object_Record.amount 
-        return(summ_weekday_amount)       
+        for object_record in self.records:  
+            if one_week_ago <= object_record.date: 
+                summ_weekday_amount += object_record.amount 
+        return summ_weekday_amount 
           
         
 class CashCalculator(Calculator): 
-    def get_today_stats(seif): 
+    def __init__(self, type_of_currency):
+        self.type_of_currency = type_of_currency
+    def get_today_stats(seif, type_of_currency): 
+        currency_multiplier = сash_сalculator.get_today_cash_remained(type_of_currency)
         if Calculator1.get_today_stats() < Calculator1.limit:
             balance_for_the_day = Calculator1.limit - Calculator1.get_today_stats()
-            print(f'На сегодня осталось {balance_for_the_day} р')
+            print(f'На сегодня осталось {round((balance_for_the_day/currency_multiplier), 2)} {type_of_currency}...')
 
         elif Calculator1.get_today_stats() == Calculator1.limit:
             print(f'Денег нет но, вы держитесь...')
 
         else:
             balance_for_the_day = Calculator1.get_today_stats() - Calculator1.limit
-            print(f'Денег нет, держись: твой долг -{balance_for_the_day} р')
+            print(f'Денег нет, держись: твой долг -{round((balance_for_the_day/currency_multiplier), 2)} {type_of_currency}')
 
 
-        print(f'За неделю потрачено: {Calculator1.get_week_stats()} р!!!')  
+        print(f'За неделю потрачено: {round((Calculator1.get_week_stats()/currency_multiplier), 2)} {type_of_currency}!!!')  
+
+    def get_today_cash_remained(saif, rate):
+        if rate == 'USD':
+            return 85
+        elif rate == 'EUR':
+            return 90
+        else:
+            return 0              #conventional_units
+            
+
 
 class CaloriesCalculator(Calculator): 
     def get_today_stats(seif): 
@@ -115,5 +126,6 @@ Calculator2.add_record(rе7)
 
 
 
-сash_сalculator.get_today_stats()
+сash_сalculator.get_today_stats('EUR')
 calories_calculator.get_today_stats()
+
